@@ -7,7 +7,7 @@ export const Experience = () => {
     return (
         <>
             <ambientLight intensity={1} />
-            <ScrollControls pages={26} damping={0.25} style={{ overflow: "auto" }}>
+            <ScrollControls pages={26} damping={0.25}>
                 <Overlay />
                 {/* <Office /> */}
             </ScrollControls>
