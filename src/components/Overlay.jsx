@@ -1,41 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/no-unescaped-entities */
-import { Scroll, Html } from "@react-three/drei";
-
-
-/* const Section = (props) => {
-    return (
-        <section
-            className={`h-screen flex flex-col justify-center p-10 ${props.right ? "items-end" : "items-start"
-                }`}
-
-        >
-            <div className="w-1/2 flex items-center justify-center">
-                <div className="max-w-sm w-full">
-                    <div className="bg-white  rounded-lg px-8 py-12">
-                        {props.children}
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}; */
-
-{/*             <Section >
-                    <h1 className="font-semibold font-serif text-2xl">
-                        Hello, I'm Wawa Sensei
-                    </h1>
-                    <p className="text-gray-500">Welcome to my beautiful portfolio</p>
-                    <p className="mt-3">I know:</p>
-                    <ul className="leading-9">
-                        <li>🧑‍💻 How to code</li>
-                        <li>🧑‍🏫 How to learn</li>
-                        <li>📦 How to deliver</li>
-                    </ul>
-                    <p className="animate-bounce  mt-6">↓</p>
-                </Section>
-                <Section right >
-                </Section> */}
+import { Html } from "@react-three/drei";
 
 export const Overlay = () => {
 
@@ -105,7 +68,7 @@ export const Overlay = () => {
 
 
                     <div className="section-detail-wrapper">
-                        <p className="section-text">Hi there 👋! I'm a third-year digital media student from UK currently studying in
+                        <p className="section-text">Hi there 👋! I&apos;m a third-year digital media student from UK currently studying in
                             Germany. My dream is to work for Disney or Pixar one day.</p>
                         <p className="section-text"> I love creating art and playing with my cats! I also like drinking bubble tea and
                             going for hikes! Totally hippie lol ✌️. Welcome to my portfolio!</p>
@@ -131,11 +94,11 @@ export const Overlay = () => {
 
                     <div className="section-detail-wrapper">
                         <h3 className="section-heading">Candycane Village</h3>
-                        <p className="section-text">This project is in progress but it's about a super colorful village where the entire
-                            world including the people are candies. So far the story is that they are set out to explore their "space"
-                            only to realize it's a human that will try to destroy them.</p>
-                        <h3 className="section-heading">Rebecca's Reddish Radishes</h3>
-                        <p className="section-text">Oh what's that? Why, it's a red radish! Oop, another one! In this playful and comedy
+                        <p className="section-text">This project is in progress but it&apos;s about a super colorful village where the entire
+                            world including the people are candies. So far the story is that they are set out to explore their &quot;space&quot;
+                            only to realize it&apos;s a human that will try to destroy them.</p>
+                        <h3 className="section-heading">Rebecca&apos;s Reddish Radishes</h3>
+                        <p className="section-text">Oh what&apos;s that? Why, it&apos;s a red radish! Oop, another one! In this playful and comedy
                             animation, Rebecca, a young farmer, decided to plant radishes for the first time, but there is a big twist!
                         </p>
                         <h3 className="section-heading">Flora</h3>
@@ -163,7 +126,7 @@ export const Overlay = () => {
 
                     <div className="section-detail-wrapper">
                         <h3 className="section-heading">ArtStation</h3>
-                        <p className="section-text">I post all my work here. I don't want to link it yet because I want to sort it out a
+                        <p className="section-text">I post all my work here. I don&apos;t want to link it yet because I want to sort it out a
                             little bit!</p>
                         <h3 className="section-heading">Instagram</h3>
                         <p className="section-text">Check out my personal instagram for travel pics and food and stuff.</p>
