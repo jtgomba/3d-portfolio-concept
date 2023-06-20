@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
-import { Scroll } from "@react-three/drei";
+import { Scroll, Html } from "@react-three/drei";
 
 
 /* const Section = (props) => {
@@ -40,7 +40,9 @@ import { Scroll } from "@react-three/drei";
 export const Overlay = () => {
 
     return (
-        <Scroll html>
+        <Html style={{
+            transform: "translate3d(-50%,-1.85%, 0px)", top: 0
+        }}>
             <div className="w-screen light-theme">
                 <div className="toggle-bar">
                     <div className="sun-wrapper">
@@ -171,6 +173,6 @@ export const Overlay = () => {
                 </section>
 
             </div>
-        </Scroll>
+        </Html>
     );
 };
