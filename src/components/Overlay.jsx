@@ -1,12 +1,35 @@
 import { Html } from "@react-three/drei";
+import { useRef } from "react"
+
+function mapRange(value, inputMin, inputMax, outputMin, outputMax) {
+    return ((value - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin) + outputMin;
+}
 
 export const Overlay = () => {
+    //const data = useScroll();
+    const htmlRef = useRef();
+    const toggleRef = useRef();
+
+    const handleScroll = () => {
+        const scrollPosition = htmlRef.current?.scrollTop; // => scroll position
+        console.log(scrollPosition);
+        var outputValue = mapRange(scrollPosition, 0, htmlRef.current?.scrollHeight, 0, window.innerHeight);
+        toggleRef.current.style.transform = `translate3d(0, ${outputValue}px, 0)`;
+    };
 
     return (
-        <Html style={{
-            transform: "translate3d(-50%,-1.85%, 0px)", top: 0
+        <Html fullscreen style={{
+            transform: "translate3d(0%, 0px, 0px)"
         }}>
-            <div className="w-screen light-theme">
+            <div ref={htmlRef} className="w-full light-theme box-border h-full page-container" style={{ overflow: "hidden auto" }} onScroll={handleScroll}>
+
+                <div className="custom-scrollbar">
+                    <div ref={toggleRef} className="custom-scrollbar-handle">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="toggle-bar">
                     <div className="sun-wrapper">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
@@ -24,6 +47,7 @@ export const Overlay = () => {
                         </svg>
                     </div>
                 </div>
+
                 <section className="hero">
                     <div className="hero-wrapper">
 
