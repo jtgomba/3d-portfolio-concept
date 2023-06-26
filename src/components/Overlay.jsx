@@ -1,26 +1,55 @@
 import { Html } from "@react-three/drei";
-import { useRef } from "react"
+import { useRef, useLayoutEffect } from "react"
+import { gsap } from "gsap";
 
 function mapRange(value, inputMin, inputMax, outputMin, outputMax) {
     return ((value - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin) + outputMin;
 }
 
 export const Overlay = () => {
-    //const data = useScroll();
+    const overlayRef = useRef();
     const htmlRef = useRef();
     const toggleRef = useRef();
+    const firstRef = useRef();
 
     const handleScroll = () => {
         const scrollPosition = htmlRef.current?.scrollTop; // => scroll position
-        console.log(scrollPosition);
         var outputValue = mapRange(scrollPosition, 0, htmlRef.current?.scrollHeight, 0, window.innerHeight);
         toggleRef.current.style.transform = `translate3d(0, ${outputValue}px, 0)`;
     };
 
+    useLayoutEffect(() => {
+        const ctx = gsap.context((self) => {
+            const sections = self.selector('.section');
+            sections.forEach((section) => {
+                gsap.to(section, {
+                    borderTopRightRadius: 10,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'bottom bottom',
+                        end: "top top",
+                        scrub: 0.6,
+                    },
+                });
+                gsap.to(section, {
+                    borderBottomRightRadius: 700,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "bottom bottom",
+                        end: "bottom top",
+                        scrub: 0.6,
+                    },
+                });
+            });
+        }, overlayRef); // <- Scope!
+        return () => ctx.revert(); // <- Cleanup!
+    }, []);
+
+
     return (
         <Html fullscreen style={{
             transform: "translate3d(0%, 0px, 0px)"
-        }}>
+        }} portal={overlayRef}>
             <div ref={htmlRef} className="w-full light-theme box-border h-full page-container" style={{ overflow: "hidden auto" }} onScroll={handleScroll}>
 
                 <div className="custom-scrollbar">
@@ -61,19 +90,19 @@ export const Overlay = () => {
                         </div>
 
                         <div className="hero-main">
-                            <h1 className="hero-main-title">Abigail Bloom</h1>
-                            <p className="hero-main-description">Digital Media Student | 3D Artist</p>
+                            <h1 className="hero-main-title">Joel Gomba</h1>
+                            <p className="hero-main-description">Full-Stack Developer | Specializes in Frontend</p>
                         </div>
 
                         <div className="hero-second">
-                            <p className="hero-second-subheading first-sub">AbigailBloom</p>
+                            <p className="hero-second-subheading first-sub">Joel Gomba</p>
                             <p className="hero-second-subheading second-sub">Portfolio</p>
                         </div>
 
                     </div>
                 </section>
 
-                <div className="first-move section-margin"></div>
+                <div ref={firstRef} className="first-move section-margin"></div>
 
                 <section className="first-section section left">
                     <div className="progress-wrapper progress-bar-wrapper-left">

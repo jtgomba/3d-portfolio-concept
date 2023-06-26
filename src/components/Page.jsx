@@ -44,7 +44,7 @@ const Page = () => {
             fixedMarkers: true,
         });
 
-        asscroll.on("update", () => { ScrollTrigger.update });
+        asscroll.on("update", ScrollTrigger.update);
         ScrollTrigger.addEventListener("refresh", asscroll.resize);
 
         requestAnimationFrame(() => {
