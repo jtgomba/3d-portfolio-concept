@@ -168,10 +168,11 @@ export const Room = () => {
                     scrub: 0.6,
                     invalidateOnRefresh: true,
                 },
-            }).to(camera.position, {
-                y: 1.5,
-                x: -4.1,
-            });
+            })
+                .to(camera.position, {
+                    y: 1.5,
+                    x: -4.1,
+                });
         });
 
         // mobile setup code here...
