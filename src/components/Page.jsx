@@ -70,58 +70,6 @@ const Page = () => {
         //asscroll.update();
     });
 
-    /*     useEffect(() => {
-            asscrollRef.current = new ASScroll({
-                ease: 0.1,
-                disableRaf: true,
-            });
-    
-            gsap.ticker.add(asscrollRef.current.update);
-    
-            ScrollTrigger.defaults({
-                scroller: asscrollRef.current.containerElement,
-            });
-    
-            ScrollTrigger.scrollerProxy(asscrollRef.current.containerElement, {
-                scrollTop(value) {
-                    if (arguments.length) {
-                        asscrollRef.current.currentPos = value;
-                        return;
-                    }
-                    return asscrollRef.current.currentPos;
-                },
-                getBoundingClientRect() {
-                    return {
-                        top: 0,
-                        left: 0,
-                        width: window.innerWidth,
-                        height: window.innerHeight,
-                    };
-                },
-                fixedMarkers: true,
-            });
-    
-            asscrollRef.current.on("update", ScrollTrigger.update);
-            ScrollTrigger.addEventListener("refresh", asscrollRef.current.resize);
-    
-    
-            asscrollRef.current.enable({
-                newScrollElements: document.querySelectorAll(
-                    ".gsap-marker-start, .gsap-marker-end, [asscroll]"
-                ),
-            });
-    
-            return () => {
-                asscrollRef.current.disable();
-                // asscrollRef.current = null;
-            };
-    
-        }, [])
-    
-        useAnimationFrame(() => {
-            asscrollRef.current.update();
-        }); */
-
     useLayoutEffect(() => {
         const ctx = gsap.context((self) => {
             const sections = self.selector('.section');
@@ -213,7 +161,7 @@ const Page = () => {
                         <div className="hero-wrapper">
 
                             {/* <!-- Intro Stuff --> */}
-                            <div className="intro-text">Welcome to my portfolio!</div>
+                            <div className="intro-text opacity-0">Welcome to my portfolio!</div>
                             <div className="arrow-svg-wrapper">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                                     <path fill="currentColor"
