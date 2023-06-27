@@ -6,30 +6,32 @@ import { useAnimationFrame } from "../lib/useAnimationFrame";
 
 gsap.registerPlugin(ScrollTrigger);
 
+let asscroll;
+
 const Page = () => {
     const pageWrapperRef = useRef();
     const pageRef = useRef();
-    const asscrollRef = useRef();
+    const [currentPos, setCurrentPos] = useState(0);
 
     useEffect(() => {
-        asscrollRef.current = new ASScroll({
+        asscroll = new ASScroll({
             ease: 0.1,
             disableRaf: true,
         });
 
-        gsap.ticker.add(asscrollRef.current.update);
+        gsap.ticker.add(asscroll.update);
 
         ScrollTrigger.defaults({
-            scroller: asscrollRef.current.containerElement,
+            scroller: asscroll.containerElement,
         });
 
-        ScrollTrigger.scrollerProxy(asscrollRef.current.containerElement, {
+        ScrollTrigger.scrollerProxy(asscroll.containerElement, {
             scrollTop(value) {
                 if (arguments.length) {
-                    asscrollRef.current.currentPos = value;
+                    asscroll.currentPos = value;
                     return;
                 }
-                return asscrollRef.current.currentPos;
+                return asscroll.currentPos;
             },
             getBoundingClientRect() {
                 return {
@@ -42,26 +44,83 @@ const Page = () => {
             fixedMarkers: true,
         });
 
-        asscrollRef.current.on("update", ScrollTrigger.update);
-        ScrollTrigger.addEventListener("refresh", asscrollRef.current.resize);
+        asscroll.on("update", ScrollTrigger.update);
+        ScrollTrigger.addEventListener("refresh", asscroll.resize);
 
 
-        asscrollRef.current.enable({
+        asscroll.enable({
             newScrollElements: document.querySelectorAll(
                 ".gsap-marker-start, .gsap-marker-end, [asscroll]"
             ),
         });
+        const scrollSetter = () => {
+            return setCurrentPos(asscroll.currentPos);
+        };
+        gsap.ticker.add(scrollSetter);
 
         return () => {
-            asscrollRef.current.disable();
-            // asscrollRef.current = null;
+            asscroll.disable();
+            gsap.ticker.remove(asscroll.update);
+            asscroll = {};
         };
 
     }, [])
 
     useAnimationFrame(() => {
-        asscrollRef.current.update();
+        //asscroll.update();
     });
+
+    /*     useEffect(() => {
+            asscrollRef.current = new ASScroll({
+                ease: 0.1,
+                disableRaf: true,
+            });
+    
+            gsap.ticker.add(asscrollRef.current.update);
+    
+            ScrollTrigger.defaults({
+                scroller: asscrollRef.current.containerElement,
+            });
+    
+            ScrollTrigger.scrollerProxy(asscrollRef.current.containerElement, {
+                scrollTop(value) {
+                    if (arguments.length) {
+                        asscrollRef.current.currentPos = value;
+                        return;
+                    }
+                    return asscrollRef.current.currentPos;
+                },
+                getBoundingClientRect() {
+                    return {
+                        top: 0,
+                        left: 0,
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                    };
+                },
+                fixedMarkers: true,
+            });
+    
+            asscrollRef.current.on("update", ScrollTrigger.update);
+            ScrollTrigger.addEventListener("refresh", asscrollRef.current.resize);
+    
+    
+            asscrollRef.current.enable({
+                newScrollElements: document.querySelectorAll(
+                    ".gsap-marker-start, .gsap-marker-end, [asscroll]"
+                ),
+            });
+    
+            return () => {
+                asscrollRef.current.disable();
+                // asscrollRef.current = null;
+            };
+    
+        }, [])
+    
+        useAnimationFrame(() => {
+            asscrollRef.current.update();
+        }); */
 
     useLayoutEffect(() => {
         const ctx = gsap.context((self) => {
