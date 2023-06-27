@@ -20,12 +20,12 @@ function App() {
   return (
     <>
       <span className="experience">
-        <Canvas shadows={{ shadowMap: THREE.PCFSoftShadowMap }}
+        <Canvas shadows={true}
+          linear={true}
+          legacy={true}
           gl={{
-            outputEncoding: THREE.sRGBEncoding,
             toneMapping: THREE.CineonToneMapping,
             toneMappingExposure: 1.75,
-            physicallyCorrectLights: true,
           }}
         >
           <Experience />

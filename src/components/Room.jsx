@@ -90,8 +90,8 @@ export const Room = () => {
         // desktop setup code here...
         mm.add("(min-width: 969px)", () => {
             camera.position.set(0, 6.5, 10);
-            //this.rectLight.width = 0.5;
-            //this.rectLight.height = 0.7;
+            rectLightRef.current.width = 0.5;
+            rectLightRef.current.height = 0.7;
             roomRef.current.scale.set(0.11, 0.11, 0.11);
             roomRef.current.position.set(0, 0, 0);
 
@@ -102,7 +102,7 @@ export const Room = () => {
                     start: "top top",
                     end: "bottom bottom",
                     scrub: 0.6,
-                    markers: true,
+                    // markers: true,
                     invalidateOnRefresh: true,
                 },
             });
@@ -174,8 +174,8 @@ export const Room = () => {
         // mobile setup code here...
         mm.add("(max-width: 968px)", () => {
             camera.position.set(0, 6.5, 10);
-            //this.rectLight.width = 0.3;
-            //this.rectLight.height = 0.4;
+            rectLightRef.current.width = 0.3;
+            rectLightRef.current.height = 0.4;
             roomRef.current.scale.set(0.07, 0.07, 0.07);
             roomRef.current.position.set(0, 0, 0);
 
@@ -189,7 +189,7 @@ export const Room = () => {
     return (
         <group castShadow={true} receiveShadow={true}>
             <rectAreaLight
-                color={0xffffff}
+                color="green"
                 intensity={1}
                 width={0.5}
                 height={0.7}
