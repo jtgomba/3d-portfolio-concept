@@ -11,7 +11,7 @@ const CameraDolly = () => {
         const z = 10
 
         state.camera.position.lerp(vec.set(x, y, z), step)
-        state.camera.lookAt(0, 0.7, 0)
+        state.camera.lookAt(0, 0.725, 0)
         state.camera.updateProjectionMatrix()
     })
 

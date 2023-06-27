@@ -1,4 +1,10 @@
 import * as THREE from 'three'
+import { useRef, useState, useLayoutEffect } from 'react'
+import { useFrame, useThree } from '@react-three/fiber'
+import gsap from "gsap";
+import { useGLTF } from '@react-three/drei';
+import { useWindowSize } from "@uidotdev/usehooks";
+import { Circle } from './Circle';
 
 export const Floor = () => {
     return (
@@ -31,18 +37,4 @@ export const Floor = () => {
     )
 }
 
-function Circle(props) {
-    return (
-        <mesh {...props}
-            receiveShadow={true}
-            rotation={[-Math / 2, 0, 0]}
-        >
-            <circleGeometry args={[5, 64]} />
-            <meshStandardMaterial
-                color={props.mat}
-                side={THREE.BackSide}
-            />
-        </mesh>
-    )
-}
 

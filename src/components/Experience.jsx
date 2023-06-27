@@ -1,9 +1,4 @@
-import {
-    OrthographicCamera
-} from "@react-three/drei";
-
 import { Room } from "./Room";
-import { Floor } from "./Floor";
 import { useWindowSize } from "@uidotdev/usehooks";
 
 
@@ -30,7 +25,6 @@ export const Experience = () => {
             </directionalLight>
             <ambientLight color="#ffffff" intensity={1} />
             <Room />
-            <Floor />
         </>
     );
 };
