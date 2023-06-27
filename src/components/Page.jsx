@@ -2,36 +2,34 @@ import { useRef, useLayoutEffect, useEffect, useState } from "react"
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ASScroll from "@ashthornton/asscroll";
+import { useAnimationFrame } from "../lib/useAnimationFrame";
 
 gsap.registerPlugin(ScrollTrigger);
-
-function mapRange(value, inputMin, inputMax, outputMin, outputMax) {
-    return ((value - inputMin) * (outputMax - outputMin)) / (inputMax - inputMin) + outputMin;
-}
 
 const Page = () => {
     const pageWrapperRef = useRef();
     const pageRef = useRef();
+    const asscrollRef = useRef();
 
     useEffect(() => {
-        const asscroll = new ASScroll({
+        asscrollRef.current = new ASScroll({
             ease: 0.1,
             disableRaf: true,
         });
 
-        gsap.ticker.add(asscroll.update);
+        gsap.ticker.add(asscrollRef.current.update);
 
         ScrollTrigger.defaults({
-            scroller: asscroll.containerElement,
+            scroller: asscrollRef.current.containerElement,
         });
 
-        ScrollTrigger.scrollerProxy(asscroll.containerElement, {
+        ScrollTrigger.scrollerProxy(asscrollRef.current.containerElement, {
             scrollTop(value) {
                 if (arguments.length) {
-                    asscroll.currentPos = value;
+                    asscrollRef.current.currentPos = value;
                     return;
                 }
-                return asscroll.currentPos;
+                return asscrollRef.current.currentPos;
             },
             getBoundingClientRect() {
                 return {
@@ -44,19 +42,26 @@ const Page = () => {
             fixedMarkers: true,
         });
 
-        asscroll.on("update", ScrollTrigger.update);
-        ScrollTrigger.addEventListener("refresh", asscroll.resize);
+        asscrollRef.current.on("update", ScrollTrigger.update);
+        ScrollTrigger.addEventListener("refresh", asscrollRef.current.resize);
 
-        requestAnimationFrame(() => {
-            asscroll.enable({
-                newScrollElements: document.querySelectorAll(
-                    ".gsap-marker-start, .gsap-marker-end, [asscroll]"
-                ),
-            });
+
+        asscrollRef.current.enable({
+            newScrollElements: document.querySelectorAll(
+                ".gsap-marker-start, .gsap-marker-end, [asscroll]"
+            ),
         });
+
+        return () => {
+            asscrollRef.current.disable();
+            // asscrollRef.current = null;
+        };
+
     }, [])
 
-
+    useAnimationFrame(() => {
+        asscrollRef.current.update();
+    });
 
     useLayoutEffect(() => {
         const ctx = gsap.context((self) => {
