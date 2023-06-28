@@ -158,7 +158,6 @@ export const Room = () => {
                     },
                     "same"
                 );
-
             // Third section -----------------------------------------
             thirdMoveTimeline.current = new gsap.timeline({
                 scrollTrigger: {
@@ -169,10 +168,12 @@ export const Room = () => {
                     invalidateOnRefresh: true,
                 },
             })
-                .to(camera.position, {
-                    y: 1.5,
-                    x: -4.1,
-                });
+                .to(camera.position,
+                    {
+                        y: 1.5,
+                        x: -4.1,
+                    }
+                );
         });
 
         // mobile setup code here...
