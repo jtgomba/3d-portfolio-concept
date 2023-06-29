@@ -1,9 +1,10 @@
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
-
+import { useEffect } from 'react'
 const CameraDolly = () => {
-    const vec = new THREE.Vector3()
+    const { camera } = useThree()
 
+    const vec = new THREE.Vector3()
     useFrame((state) => {
         const step = 0.1
         const x = 0
