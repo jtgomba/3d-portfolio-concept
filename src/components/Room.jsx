@@ -1,13 +1,15 @@
-import { useRef, useLayoutEffect } from 'react'
+import { useRef, useLayoutEffect, Suspense } from 'react'
 import { useThree } from '@react-three/fiber'
 import gsap from "gsap";
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three'
 import { Circle } from './Circle';
+import { Model } from './Model';
 
 export const Room = () => {
     const { camera } = useThree()
     const { scene } = useGLTF("/models/Finale Version 16.glb")
+
     const roomRef = useRef();
     const firstMoveTimeline = useRef();
     const secondMoveTimeline = useRef();
@@ -22,76 +24,10 @@ export const Room = () => {
     const secondCircle = useRef()
     const thirdCircle = useRef()
 
-    function setModel(room) {
-        room.children.forEach((child) => {
-            child.castShadow = true;
-            child.receiveShadow = true;
-
-            if (child instanceof THREE.Group) {
-                child.children.forEach((groupchild) => {
-                    //console.log(groupchild.material);
-                    groupchild.castShadow = true;
-                    groupchild.receiveShadow = true;
-                });
-            }
-
-            // console.log(child);
-
-            if (child.name === "Aquarium") {
-                // console.log(child);
-                child.children[0].material = new THREE.MeshPhysicalMaterial();
-                child.children[0].material.roughness = 0;
-                child.children[0].material.color.set(0x549dd2);
-                child.children[0].material.ior = 3;
-                child.children[0].material.transmission = 1;
-                child.children[0].material.opacity = 1;
-                child.children[0].material.depthWrite = false;
-                child.children[0].material.depthTest = false;
-            }
-
-            if (child.name === "Computer") {
-                /*  child.children[1].material = new THREE.MeshBasicMaterial({
-                     map: this.resources.items.screen,
-                 }); */
-            }
-
-            if (child.name === "Mini_Floor") {
-                child.position.x = -0.289521;
-                child.position.z = 8.83572;
-            }
-
-            if (
-                child.name === "Mailbox" ||
-                child.name === "Lamp" ||
-                child.name === "FloorFirst" ||
-                child.name === "FloorSecond" ||
-                child.name === "FloorThird" ||
-                child.name === "Dirt" ||
-                child.name === "Flower1" ||
-                child.name === "Flower2"
-            ) {
-                child.scale.set(0, 0, 0);
-            }
-
-            //child.scale.set(0, 0, 0);
-            if (child.name === "Cube") {
-                // child.scale.set(1, 1, 1);
-                child.position.set(0, -1, 0);
-                child.rotation.y = Math.PI / 4;
-            }
-
-            //this.roomChildren[child.name.toLowerCase()] = child;
-        });
-
-        //this.roomChildren["rectLight"] = rectLight;
-
-        roomRef.current.scale.set(0.11, 0.11, 0.11);
-    }
-
     useLayoutEffect(() => {
         let mm = gsap.matchMedia();
 
-        setModel(roomRef.current)
+        //setModel(roomRef.current)
         // desktop setup code here...
         mm.add("(min-width: 969px)", () => {
             camera.position.set(0, 6.5, 10);
@@ -167,9 +103,6 @@ export const Room = () => {
                     end: "bottom bottom",
                     scrub: 0.6,
                     invalidateOnRefresh: true,
-                    onUpdate: () => {
-                        setValues(camPosition)
-                    }
                 },
             })
                 .to(camera.position,
@@ -254,19 +187,10 @@ export const Room = () => {
 
     return (
         <>
-            <group castShadow={true} receiveShadow={true}>
-                <rectAreaLight
-                    color={0xffffff}
-                    intensity={1}
-                    width={0.5}
-                    height={0.7}
-                    position={[7.68244, 7, 0.5]}
-                    rotation-x={-Math.PI / 2}
-                    rotation-z={Math.PI / 4}
-                    ref={rectLightRef}
-                />
-                <primitive object={scene} ref={roomRef} castShadow={true} receiveShadow={true} />
-            </group>
+            {/* <primitive object={scene} ref={roomRef} castShadow={true} receiveShadow={true} /> */}
+            <Suspense fallback={null}>
+                <Model subRef={roomRef} rectRef={rectLightRef} />
+            </Suspense>
             <mesh
                 receiveShadow={true}
                 rotation={[Math.PI / 2, 0, 0]}

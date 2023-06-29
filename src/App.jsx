@@ -16,7 +16,7 @@ const orthographicCamera = new THREE.OrthographicCamera(
 orthographicCamera.position.y = 5.65;
 orthographicCamera.position.z = 10;
 orthographicCamera.rotation.x = -Math.PI / 6;
-orthographicCamera.zoom = 145
+orthographicCamera.zoom = 145;
 
 function App() {
 
@@ -33,6 +33,7 @@ function App() {
           gl={{
             toneMapping: THREE.CineonToneMapping,
             toneMappingExposure: 1.75,
+            antialias: true
           }}
           camera={orthographicCamera}
         >
