@@ -24,6 +24,16 @@ export const Room = () => {
     const secondCircle = useRef()
     const thirdCircle = useRef()
 
+    const first = useRef();
+    const second = useRef();
+    const third = useRef();
+    const fourth = useRef();
+    const fifth = useRef();
+    const sixth = useRef();
+    const seventh = useRef();
+    const eighth = useRef();
+    const ninth = useRef();
+
     useLayoutEffect(() => {
         let mm = gsap.matchMedia();
 
@@ -35,7 +45,7 @@ export const Room = () => {
             rectLightRef.current.width = 0.5;
             rectLightRef.current.height = 0.7;
             roomRef.current.scale.set(0.11, 0.11, 0.11);
-            roomRef.current.position.set(0, 0, 0);
+            roomRef.current.position.set(-0.002, 0, 0);
 
             // First section -----------------------------------------
             firstMoveTimeline.current = new gsap.timeline({
@@ -121,6 +131,68 @@ export const Room = () => {
             roomRef.current.scale.set(0.07, 0.07, 0.07);
             roomRef.current.position.set(0, 0, 0);
 
+            // First section -----------------------------------------
+            firstMoveTimeline.current = new gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".first-move",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 0.6,
+                    // invalidateOnRefresh: true,
+                },
+            }).to(roomRef.current.scale, {
+                x: 0.1,
+                y: 0.1,
+                z: 0.1,
+            });
+
+            // Second section -----------------------------------------
+            secondMoveTimeline.current = new gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".second-move",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 0.6,
+                    invalidateOnRefresh: true,
+                },
+            })
+                .to(
+                    roomRef.current.scale,
+                    {
+                        x: 0.25,
+                        y: 0.25,
+                        z: 0.25,
+                    },
+                    "same"
+                )
+                .to(
+                    rectLightRef.current,
+                    {
+                        width: 0.3 * 3.4,
+                        height: 0.4 * 3.4,
+                    },
+                    "same"
+                )
+                .to(
+                    roomRef.current.position,
+                    {
+                        x: 1.5,
+                    },
+                    "same"
+                );
+
+            // Third section -----------------------------------------
+            thirdMoveTimeline.current = new gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".third-move",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 0.6,
+                    invalidateOnRefresh: true,
+                },
+            }).to(roomRef.current.position, {
+                z: -4.5,
+            });
         });
 
         mm.add("all", () => {
@@ -178,6 +250,103 @@ export const Room = () => {
                 y: 3,
                 z: 3,
             });
+
+            // Mini Platform Animations
+            const secondPartTimeline = new gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".third-move",
+                    start: "center center",
+                },
+            });
+
+            roomRef.current.children.forEach((child) => {
+                if (child.name === "Mini_Floor") {
+                    first.current = gsap.to(child.position, {
+                        x: -5.44055,
+                        z: 13.6135,
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "Mailbox") {
+                    second.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "Lamp") {
+                    third.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "FloorFirst") {
+                    fourth.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "FloorSecond") {
+                    fifth.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "FloorThird") {
+                    sixth.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "Dirt") {
+                    seventh.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "Flower1") {
+                    eighth.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+                if (child.name === "Flower2") {
+                    ninth.current = gsap.to(child.scale, {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        ease: "back.out(2)",
+                        duration: 0.3,
+                    });
+                }
+            });
+            secondPartTimeline.add(first.current);
+            secondPartTimeline.add(second.current);
+            secondPartTimeline.add(third.current);
+            secondPartTimeline.add(fourth.current, "-=0.2");
+            secondPartTimeline.add(fifth.current, "-=0.2");
+            secondPartTimeline.add(sixth.current, "-=0.2");
+            secondPartTimeline.add(seventh.current, "-=0.2");
+            secondPartTimeline.add(eighth.current);
+            secondPartTimeline.add(ninth.current, "-=0.1");
         })
 
         return () => {

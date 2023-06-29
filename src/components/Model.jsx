@@ -13,7 +13,7 @@ export function Model({ subRef, rectRef }) {
     <group
       ref={group}
       dispose={null}>
-      <group name="Scene" ref={subRef} scale={[0.11, 0.11, 0.11]}>
+      <group name="Scene" ref={subRef} scale={[0.11, 0.11, 0.11]} rotation={[0, -.02, 0]}>
         <group
           name="Cube"
           position={[0.7, 1.3, -18.8]}

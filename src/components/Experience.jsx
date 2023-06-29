@@ -9,7 +9,7 @@ export const Experience = () => {
         <>
             <directionalLight
                 color="#ffffff"
-                intensity={3}
+                intensity={2}
                 castShadow={true}
                 position={[-1.5, 7, 3]}
                 shadow-mapSize={[2048, 2048]}
