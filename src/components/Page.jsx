@@ -2,7 +2,6 @@ import { useRef, useLayoutEffect, useEffect, useState } from "react"
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ASScroll from "@ashthornton/asscroll";
-import { useAnimationFrame } from "../lib/useAnimationFrame";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,10 +64,6 @@ const Page = () => {
         };
 
     }, [])
-
-    useAnimationFrame(() => {
-        //asscroll.update();
-    });
 
     useLayoutEffect(() => {
         const ctx = gsap.context((self) => {

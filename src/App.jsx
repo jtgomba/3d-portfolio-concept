@@ -1,12 +1,22 @@
 import { Canvas } from "@react-three/fiber";
 import { useEffect } from "react";
-import {
-  OrthographicCamera
-} from "@react-three/drei";
-import CameraDolly from "./components/CameraDolly";
+import { useWindowSize } from "@uidotdev/usehooks";
 import { Experience } from "./components/Experience";
 import Page from "./components/Page";
 import * as THREE from 'three'
+
+const orthographicCamera = new THREE.OrthographicCamera(
+  (-(window.innerWidth / window.innerHeight) * 5) / 2,
+  ((window.innerWidth / window.innerHeight) * 5) / 2,
+  5 / 2,
+  -5 / 2,
+  -50,
+  50
+);
+orthographicCamera.position.y = 5.65;
+orthographicCamera.position.z = 10;
+orthographicCamera.rotation.x = -Math.PI / 6;
+orthographicCamera.zoom = 145
 
 function App() {
 
@@ -24,24 +34,9 @@ function App() {
             toneMapping: THREE.CineonToneMapping,
             toneMappingExposure: 1.75,
           }}
+          camera={orthographicCamera}
         >
           <Experience />
-          <OrthographicCamera
-            makeDefault
-            manual
-            // position={[-Math.PI / 6, 5.65, 10]}
-            position={[0, 6.5, 10]}
-            left={(-(window.innerWidth / window.innerHeight) * 5) / 2}
-            right={((window.innerWidth / window.innerHeight) * 5) / 2}
-            top={5 / 2}
-            bottom={-5 / 2}
-            near={-50}
-            far={50}
-            onUpdate={(c) => c.updateProjectionMatrix()}
-          >
-          </OrthographicCamera>
-          {/* <gridHelper args={[10, 10, `white`, `gray`]} /> */}
-          <CameraDolly />
         </Canvas>
       </span>
       <Page />

@@ -1,5 +1,5 @@
-import { useRef, useState, useLayoutEffect } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useRef, useLayoutEffect } from 'react'
+import { useThree } from '@react-three/fiber'
 import gsap from "gsap";
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three'
@@ -95,6 +95,7 @@ export const Room = () => {
         // desktop setup code here...
         mm.add("(min-width: 969px)", () => {
             camera.position.set(0, 6.5, 10);
+            camera.updateProjectionMatrix()
             rectLightRef.current.width = 0.5;
             rectLightRef.current.height = 0.7;
             roomRef.current.scale.set(0.11, 0.11, 0.11);
@@ -166,6 +167,9 @@ export const Room = () => {
                     end: "bottom bottom",
                     scrub: 0.6,
                     invalidateOnRefresh: true,
+                    onUpdate: () => {
+                        setValues(camPosition)
+                    }
                 },
             })
                 .to(camera.position,
