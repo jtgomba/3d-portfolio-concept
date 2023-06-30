@@ -6,6 +6,22 @@ import { Circle } from './Circle';
 import { Model } from './Model';
 import { usePreload } from "../hooks/usePreload"
 
+function convert(element) {
+    element.style.overflow = "hidden";
+    element.innerHTML = element.innerText
+        .split("")
+        .map((char) => {
+            if (char === " ") {
+                return `<span>&nbsp;</span>`;
+            }
+            return `<span class="animatedis">${char}</span>`;
+        })
+        .join("");
+
+    return element;
+}
+
+
 export const Room = () => {
     const { camera, scene } = useThree();
 
@@ -47,10 +63,15 @@ export const Room = () => {
     useLayoutEffect(() => {
         let mm = gsap.matchMedia();
 
+        convert(document.querySelector(".intro-text"));
+        convert(document.querySelector(".hero-main-title"));
+        convert(document.querySelector(".hero-main-description"));
+        convert(document.querySelector(".hero-second-subheading"));
+        convert(document.querySelector(".second-sub"));
+
         mm.add("all", () => {
             preloaderTimeline.current = new gsap.timeline();
             preloaderTimeline.current.set(".animatedis", { y: 0, yPercent: 100 });
-            //preloaderTimeline.current.set(".intro-text", { y: 0, yPercent: 100 });
             preloaderTimeline.current.to(".preloader", {
                 opacity: 0,
                 delay: 1,
@@ -109,7 +130,8 @@ export const Room = () => {
                         opacity: 1,
                         //onComplete: resolve,
                         onComplete: () => {
-                            setPreload()
+                            //setPreload()
+                            window.addEventListener("wheel", setPreload, { once: true });
                         }
                     },
                     "same"
@@ -346,11 +368,11 @@ export const Room = () => {
                     )
                     .to(".arrow-svg-wrapper", {
                         opacity: 1,
-                        onComplete: setSecondPreload(),
+
                     });
+                secondPreloaderTimeline.current.add(setSecondPreload, ">")
             })
         }
-
         return () => {
             if (ctxRef.current) {
                 ctxRef.current.revert()

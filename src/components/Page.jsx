@@ -2,6 +2,7 @@ import { useRef, useLayoutEffect, useEffect, useState } from "react"
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ASScroll from "@ashthornton/asscroll";
+import { usePreload } from "../hooks/usePreload";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,122 +11,134 @@ let asscroll;
 const Page = () => {
     const pageWrapperRef = useRef();
     const pageRef = useRef();
+    const ctx = useRef();
     const [currentPos, setCurrentPos] = useState(0);
+    const secondPreload = usePreload((state) => state.secondPreload)
 
     useEffect(() => {
-        asscroll = new ASScroll({
-            ease: 0.1,
-            disableRaf: true,
-        });
-
-        gsap.ticker.add(asscroll.update);
-
-        ScrollTrigger.defaults({
-            scroller: asscroll.containerElement,
-        });
-
-        ScrollTrigger.scrollerProxy(asscroll.containerElement, {
-            scrollTop(value) {
-                if (arguments.length) {
-                    asscroll.currentPos = value;
-                    return;
-                }
-                return asscroll.currentPos;
-            },
-            getBoundingClientRect() {
-                return {
-                    top: 0,
-                    left: 0,
-                    width: window.innerWidth,
-                    height: window.innerHeight,
-                };
-            },
-            fixedMarkers: true,
-        });
-
-        asscroll.on("update", ScrollTrigger.update);
-        ScrollTrigger.addEventListener("refresh", asscroll.resize);
+        if (secondPreload === true) {
 
 
-        asscroll.enable({
-            newScrollElements: document.querySelectorAll(
-                ".gsap-marker-start, .gsap-marker-end, [asscroll]"
-            ),
-        });
-        const scrollSetter = () => {
-            return setCurrentPos(asscroll.currentPos);
-        };
-        gsap.ticker.add(scrollSetter);
+            asscroll = new ASScroll({
+                ease: 0.1,
+                disableRaf: true,
+            });
 
+            gsap.ticker.add(asscroll.update);
+
+            ScrollTrigger.defaults({
+                scroller: asscroll.containerElement,
+            });
+
+            ScrollTrigger.scrollerProxy(asscroll.containerElement, {
+                scrollTop(value) {
+                    if (arguments.length) {
+                        asscroll.currentPos = value;
+                        return;
+                    }
+                    return asscroll.currentPos;
+                },
+                getBoundingClientRect() {
+                    return {
+                        top: 0,
+                        left: 0,
+                        width: window.innerWidth,
+                        height: window.innerHeight,
+                    };
+                },
+                fixedMarkers: true,
+            });
+
+            asscroll.on("update", ScrollTrigger.update);
+            ScrollTrigger.addEventListener("refresh", asscroll.resize);
+
+
+            asscroll.enable({
+                newScrollElements: document.querySelectorAll(
+                    ".gsap-marker-start, .gsap-marker-end, [asscroll]"
+                ),
+            });
+            const scrollSetter = () => {
+                return setCurrentPos(asscroll.currentPos);
+            };
+            gsap.ticker.add(scrollSetter);
+        }
         return () => {
-            asscroll.disable();
-            gsap.ticker.remove(asscroll.update);
-            asscroll = {};
+            if (asscroll) {
+                asscroll.disable();
+                gsap.ticker.remove(asscroll.update);
+                asscroll = {};
+            }
         };
-
-    }, [])
+    }, [secondPreload])
 
     useLayoutEffect(() => {
-        const ctx = gsap.context((self) => {
-            const sections = self.selector('.section');
-            sections.forEach((section) => {
-                const thisSection = gsap.utils.selector(section);
-                const progressWrapper = thisSection(".progress-wrapper");
-                const progressBar = thisSection(".progress-bar");
-                if (section.classList.contains("right")) {
-                    gsap.to(section, {
-                        borderTopLeftRadius: 10,
+        if (secondPreload === true) {
+            ctx.current = gsap.context((self) => {
+                const sections = self.selector('.section');
+                sections.forEach((section) => {
+                    const thisSection = gsap.utils.selector(section);
+                    const progressWrapper = thisSection(".progress-wrapper");
+                    const progressBar = thisSection(".progress-bar");
+                    if (section.classList.contains("right")) {
+                        gsap.to(section, {
+                            borderTopLeftRadius: 10,
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "top bottom",
+                                end: "top top",
+                                scrub: 0.6,
+                            },
+                        });
+                        gsap.to(section, {
+                            borderBottomLeftRadius: 700,
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "bottom bottom",
+                                end: "bottom top",
+                                scrub: 0.6,
+                            },
+                        });
+                    } else {
+                        gsap.to(section, {
+                            'border-top-right-radius': 10,
+                            scrollTrigger: {
+                                trigger: section,
+                                start: 'top bottom',
+                                end: "top top",
+                                scrub: 0.6,
+                            },
+                        });
+                        gsap.to(section, {
+                            'border-bottom-right-radius': 700,
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "bottom bottom",
+                                end: "bottom top",
+                                scrub: 0.6,
+                            },
+                        });
+                    }
+                    gsap.from(progressBar, {
+                        scaleY: 0,
                         scrollTrigger: {
                             trigger: section,
-                            start: "top bottom",
-                            end: "top top",
-                            scrub: 0.6,
+                            start: "top top",
+                            end: "bottom bottom",
+                            scrub: 0.4,
+                            pin: progressWrapper,
+                            pinSpacing: false,
                         },
                     });
-                    gsap.to(section, {
-                        borderBottomLeftRadius: 700,
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "bottom bottom",
-                            end: "bottom top",
-                            scrub: 0.6,
-                        },
-                    });
-                } else {
-                    gsap.to(section, {
-                        'border-top-right-radius': 10,
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top bottom',
-                            end: "top top",
-                            scrub: 0.6,
-                        },
-                    });
-                    gsap.to(section, {
-                        'border-bottom-right-radius': 700,
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "bottom bottom",
-                            end: "bottom top",
-                            scrub: 0.6,
-                        },
-                    });
-                }
-                gsap.from(progressBar, {
-                    scaleY: 0,
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top top",
-                        end: "bottom bottom",
-                        scrub: 0.4,
-                        pin: progressWrapper,
-                        pinSpacing: false,
-                    },
                 });
-            });
-        }, pageWrapperRef); // <- Scope!
-        return () => ctx.revert(); // <- Cleanup!
-    }, []);
+            }, pageWrapperRef); // <- Scope!
+        }
+        return () => {
+            if (ctx.current) {
+                ctx.current.revert();
+            }
+        } // <- Cleanup!
+    }, [secondPreload]);
 
     return (
         <>
@@ -165,7 +178,7 @@ const Page = () => {
                         <div className="hero-wrapper">
 
                             {/* <!-- Intro Stuff --> */}
-                            <div className="intro-text animatedis">Welcome to my portfolio!</div>
+                            <div className="intro-text">Welcome to my portfolio!</div>
                             <div className="arrow-svg-wrapper">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24">
                                     <path fill="currentColor"
