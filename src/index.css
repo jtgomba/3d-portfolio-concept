@@ -490,3 +490,7 @@ svg {
   width: 100%;
   height: 100%;
 }
+
+#leva__root > div {
+  z-index: 100000000000000000000;
+}
